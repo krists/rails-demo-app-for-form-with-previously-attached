@@ -18,12 +18,33 @@
 
   <div>
     <%= form.label :main_image, style: "display: block" %>
-    <%= form.file_field :main_image %>
+    <div>
+      <% if form.object.main_image.attached? && form.object.main_image.blob.persisted? %>
+        <label>
+          <%= image_tag form.object.main_image.variant(:thumb) %>
+          <%= form.object.main_image.filename %>
+          <%= check_box_tag form.field_name(:main_image), form.object.main_image.signed_id, true %>
+        </label>
+      <% end %>
+    </div>
+    <%= form.file_field :main_image, direct_upload: true %>
   </div>
 
   <div>
     <%= form.label :additional_images, style: "display: block" %>
-    <%= form.file_field :additional_images, multiple: true %>
+    <ul>
+      <% form.object.additional_images.each do |additional_image| %>
+        <% next unless additional_image.blob.persisted? %>
+        <li>
+          <label>
+            <%= image_tag additional_image.variant(:thumb) %>
+            <%= additional_image.filename %>
+            <%= check_box_tag form.field_name(:additional_images, multiple: true), additional_image.signed_id, true %>
+          </label>
+        </li>
+      <% end %>
+    </ul>
+    <%= form.file_field :additional_images, multiple: true, include_hidden: true, direct_upload: true %>
   </div>
 
   <div>
