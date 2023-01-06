@@ -1,0 +1,19 @@
+<div id="<%= dom_id post %>">
+  <p>
+    <strong>Title:</strong>
+    <%= post.title %>
+  </p>
+
+  <p>
+    <strong>Main image:</strong>
+    <%= link_to post.main_image.filename, post.main_image if post.main_image.attached? %>
+  </p>
+
+  <p>
+    <strong>Additional images:</strong>
+    <% post.additional_images.each do |additional_image| %>
+      <div><%= link_to additional_image.filename, additional_image %></div>
+    <% end %>
+  </p>
+
+</div>
